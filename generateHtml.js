@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 let outputDir = './dist';
 
-const convertFileToHtml = (filePath) => {
+const convertFileToHtml = (filePath, stylesheet) => {
     const data = parseFile(filePath);
 
     const lines = data.split(/\r?\n/);
@@ -22,7 +22,7 @@ const convertFileToHtml = (filePath) => {
         }
     })
 
-    const html = encloseInHtml(title, body);
+    const html = encloseInHtml(title, body, stylesheet);
 
     const outputFilePath = path.join(outputDir, path.basename(filePath, '.txt') + '.html')
     fs.writeFileSync(outputFilePath, html);
@@ -45,15 +45,17 @@ const parseFile = (path) => {
  * Returns a HTML5 string using the following args
  * @param {string} body
  * @param {string} title
+ * @param {string} stylesheet
  * @returns valid HTML containing the body
  */
- const encloseInHtml = (title, body) => {
+ const encloseInHtml = (title, body, stylesheet) => {
     return `<!doctype html>
     <html lang="en">
     <head>
       <meta charset="utf-8">
       <title>${title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="${stylesheet}" rel="stylesheet">
     </head>
     <body>
       <h1>${title}</h1>
@@ -81,7 +83,7 @@ const checkDirForTxt = (dirPath) => {
     return txtPaths;
 }
 
-const main =  async (input, output) => {
+const main =  async (input, output, stylesheet) => {
 
     outputDir = output;
     //Create empty directory for output
@@ -109,7 +111,7 @@ const main =  async (input, output) => {
 
         filePaths.forEach(file => {
             console.log(`Converting ${path.basename(file)} to HTML`)
-            convertFileToHtml(file)});
+            convertFileToHtml(file, stylesheet)});
     }
 
     return;

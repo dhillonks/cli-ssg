@@ -22,13 +22,16 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       type: 'string',
       requiresArg: true,
       required: true
-    }    
-  })
-  .options({
+    },
     output: {
       alias: 'o',
       default: outputDir,
       description: 'Output directory',
+      type: 'string'
+    },
+    stylesheet: {
+      alias: 's',
+      description: 'CSS Stylesheet for the website',
       type: 'string'
     }
   })
@@ -75,7 +78,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .argv;
 
 try {
-    generateHtml(argv.i, argv.o);
+    generateHtml(argv.i, argv.o, argv.s);
   } catch (err) {
     console.error(err)
   }
