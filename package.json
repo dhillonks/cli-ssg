@@ -22,6 +22,6 @@
     "yargs": "^17.1.1"
   },
   "bin": {
-    "ssg": "./bin/index.js"
+    "cli-ssg": "./bin/index.js"
   }
 }

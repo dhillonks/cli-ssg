@@ -104,19 +104,26 @@ const main =  async (input, output, stylesheet) => {
 
     if(stats.isFile()){
         if(path.extname(input) === '.txt'){
+            console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
             convertFileToHtml(input);
         }
         else console.log(chalk.red("File must be .txt"));
     }
     else{
         const filePaths = checkDirForTxt(input);
+        let indexFileBody = '';
 
         filePaths.forEach(file => {
             console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
-            convertFileToHtml(file, stylesheet)});
-    }
+            convertFileToHtml(file, stylesheet);
+            indexFileBody += `<a href="./${path.basename(file, '.txt')}.html">${path.basename(file, '.txt')}</a><br>`
+          });
 
-    return;
+        //Generate an index.html with relative links to each HTML file
+        const html = encloseInHtml('Index File', indexFileBody, stylesheet);
+        const outputFilePath = path.join(outputDir, 'index.html');
+        fs.writeFileSync(outputFilePath, html);
+    }
 }
 
 module.exports = main;
