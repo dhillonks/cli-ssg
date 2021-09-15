@@ -6,7 +6,7 @@ const generateHtml = require("../generateHtml");
 const fs = require("fs");
 const path = require("path");
 
-let txtPathsArr = [];
+const outputDir = './dist';
 
 //Setup yargs
 var argv = require('yargs/yargs')(process.argv.slice(2))
@@ -27,6 +27,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .options({
     output: {
       alias: 'o',
+      default: outputDir,
       description: 'Output directory',
       type: 'string'
     }
@@ -60,7 +61,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
     }
 
     //Output
-    if(argv.o){
+    if(argv.o != outputDir){
       if(fs.existsSync(argv.o)){
         if(!fs.lstatSync(argv.o).isDirectory()){
           throw new Error("Output path points to a file. Output directory must be valid")
@@ -74,7 +75,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .argv;
 
 try {
-    generateHtml(argv.i);
+    generateHtml(argv.i, argv.o);
   } catch (err) {
     console.error(err)
   }

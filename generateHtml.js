@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const outputDir = './dist';
+let outputDir = './dist';
 
 const convertFileToHtml = (filePath) => {
     const data = parseFile(filePath);
@@ -81,8 +81,9 @@ const checkDirForTxt = (dirPath) => {
     return txtPaths;
 }
 
-const main =  async (input) => {
+const main =  async (input, output) => {
 
+    outputDir = output;
     //Create empty directory for output
     if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir, {recursive: true});
@@ -98,7 +99,7 @@ const main =  async (input) => {
     var stats = fs.statSync(input);
 
     if(stats.isFile()){
-        if(path.extname(file) === '.txt'){
+        if(path.extname(input) === '.txt'){
             convertFileToHtml(input);
         }
         else console.log("File must be .txt");
