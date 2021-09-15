@@ -1,0 +1,25 @@
+{
+  "name": "ssg",
+  "version": "0.1.0",
+  "description": "Tool to generate HTML web sites using txt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhillonks/ssg.git"
+  },
+  "author": "dhillonks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dhillonks/ssg/issues"
+  },
+  "homepage": "https://github.com/dhillonks/ssg#readme",
+  "dependencies": {
+    "yargs": "^17.1.1"
+  },
+  "bin": {
+    "ssg": "./bin/index.js"
+  }
+}
