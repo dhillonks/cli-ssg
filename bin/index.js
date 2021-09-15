@@ -5,12 +5,16 @@ const package = require("../package");
 const generateHtml = require("../generateHtml");
 const fs = require("fs");
 const path = require("path");
+const figlet = require("figlet");
 
 const outputDir = './dist';
 
+const decoratedHeader = figlet.textSync(package.name, {horizontalLayout: 'full'});
+console.log(decoratedHeader);
+
 //Setup yargs
 var argv = require('yargs/yargs')(process.argv.slice(2))
-  .usage('ssg: Tool to generate HTML web sites using txt\n\nUsage: $0 [options]')
+  .usage('ssg-cli: Tool to generate HTML web sites using txt\n\nUsage: $0 [options]')
   .help('help').alias('help', 'h')
   .example('$0 -i file.txt -> generates a file.html by processing file.txt')
   .showHelpOnFail(false, "Use --help for available options")
@@ -36,27 +40,6 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
     }
   })
   .check((argv) => {
-
-    //Check if directory contains txt file recursively
-    const checkDirForTxt = (dirPath) => {
-      let txtPaths = [];
-
-      const files = fs.readdirSync(dirPath);
-      
-      files.forEach((file) => {
-        console.log(dirPath, file)
-        const fullFilePath = path.join(dirPath, file);
-
-        if(fs.lstatSync(fullFilePath).isDirectory()){
-          txtPaths = [...txtPaths, ...checkDirForTxt(fullFilePath)];
-        }
-        else if(path.extname(file) === '.txt'){
-          txtPaths.push(fullFilePath);
-        }
-      });
-      
-      return txtPaths;
-    }
 
     //Input
     if(!fs.existsSync(argv.i)){

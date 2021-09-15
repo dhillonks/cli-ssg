@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
+
 let outputDir = './dist';
 
 const convertFileToHtml = (filePath, stylesheet) => {
@@ -104,13 +106,13 @@ const main =  async (input, output, stylesheet) => {
         if(path.extname(input) === '.txt'){
             convertFileToHtml(input);
         }
-        else console.log("File must be .txt");
+        else console.log(chalk.red("File must be .txt"));
     }
     else{
         const filePaths = checkDirForTxt(input);
 
         filePaths.forEach(file => {
-            console.log(`Converting ${path.basename(file)} to HTML`)
+            console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
             convertFileToHtml(file, stylesheet)});
     }
 

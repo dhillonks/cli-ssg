@@ -1,5 +1,5 @@
 {
-  "name": "ssg",
+  "name": "cli-ssg",
   "version": "0.1.0",
   "description": "Tool to generate HTML web sites using txt",
   "main": "index.js",
@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/dhillonks/ssg#readme",
   "dependencies": {
+    "chalk": "^4.1.2",
+    "figlet": "^1.5.2",
     "yargs": "^17.1.1"
   },
   "bin": {
