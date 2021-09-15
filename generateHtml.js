@@ -62,6 +62,25 @@ const parseFile = (path) => {
     </html>`
 }
 
+const checkDirForTxt = (dirPath) => {
+    let txtPaths = [];
+
+    const files = fs.readdirSync(dirPath);
+    
+    files.forEach((file) => {
+      const fullFilePath = path.join(dirPath, file);
+
+      if(fs.lstatSync(fullFilePath).isDirectory()){
+        txtPaths = [...txtPaths, ...checkDirForTxt(fullFilePath)];
+      }
+      else if(path.extname(file) === '.txt'){
+        txtPaths.push(fullFilePath);
+      }
+    });
+    
+    return txtPaths;
+}
+
 const main =  async (input) => {
 
     //Create empty directory for output
@@ -73,23 +92,23 @@ const main =  async (input) => {
         fs.mkdirSync(outputDir, {recursive: true});
     }
     
+    console.log("Input directory: " + input);
+
     //Check if input points to a file or a folder
     var stats = fs.statSync(input);
 
     if(stats.isFile()){
-        convertFileToHtml(input);
+        if(path.extname(file) === '.txt'){
+            convertFileToHtml(input);
+        }
+        else console.log("File must be .txt");
     }
     else{
-        fs.readdir(input, (err, files) => {
-            if (err) {
-                return console.error(err);
-            } 
-                        
-            files.forEach((file) => {
-                const filePath = path.join(input, file);
-                convertFileToHtml(filePath);
-            });
-        });
+        const filePaths = checkDirForTxt(input);
+
+        filePaths.forEach(file => {
+            console.log(`Converting ${path.basename(file)} to HTML`)
+            convertFileToHtml(file)});
     }
 
     return;
