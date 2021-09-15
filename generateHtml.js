@@ -4,6 +4,11 @@ const chalk = require('chalk');
 
 let outputDir = './dist';
 
+/**
+ * Uses a txt file path to create an html file
+ * @param {string} filePath 
+ * @param {string} stylesheet 
+ */
 const convertFileToHtml = (filePath, stylesheet) => {
     const data = parseFile(filePath);
 
@@ -66,6 +71,11 @@ const parseFile = (path) => {
     </html>`
 }
 
+/**
+ * Recursively checks a directory and returns paths for all .txt files
+ * @param {string} dirPath 
+ * @returns {Array<String>} Array containing file paths 
+ */
 const checkDirForTxt = (dirPath) => {
     let txtPaths = [];
 
@@ -85,6 +95,12 @@ const checkDirForTxt = (dirPath) => {
     return txtPaths;
 }
 
+/**
+ * Main function to handle cli
+ * @param {*} input - input file/dir path
+ * @param {*} output - output directory path
+ * @param {*} stylesheet - optional stylesheet
+ */
 const main =  async (input, output, stylesheet) => {
 
     outputDir = output;
