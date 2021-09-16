@@ -35,7 +35,13 @@ This processes all the <code>.txt</code> files in <code>sample_dir</code> and ge
   -o, --output      Output directory                [string] [default: "./dist"]
   -s, --stylesheet  CSS Stylesheet for the website                      [string]
   ```
-  
+## Features
+###### :white_check_mark: Parse title from the input files
+###### :white_check_mark: Ability to provide a custom output directory
+###### :white_check_mark: Ability to provide stylesheet URL
+###### :white_check_mark: Recursively parses input nested directories and files
+###### :white_check_mark: Automatically generates index.html if multiple txt files are present in input di
+
 ## License
 MIT
   
