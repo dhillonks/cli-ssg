@@ -132,7 +132,7 @@ const main =  async (input, output, stylesheet) => {
         filePaths.forEach(file => {
             console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
             convertFileToHtml(file, stylesheet);
-            indexFileBody += `<a href="./${path.basename(file, '.txt')}.html">${path.basename(file, '.txt')}</a><br>`
+            indexFileBody += `<a href="./${encodeURI(path.basename(file, '.txt'))}.html">${path.basename(file, '.txt')}</a><br>`
           });
 
         //Generate an index.html with relative links to each HTML file
