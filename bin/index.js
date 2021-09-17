@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-const yargs = require("yargs");
 const package = require("../package");
 const generateHtml = require("../generateHtml");
 const fs = require("fs");
-const path = require("path");
 const figlet = require("figlet");
 
 const outputDir = './dist';
