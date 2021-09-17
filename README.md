@@ -43,7 +43,9 @@ This processes all the <code>.txt</code> files in <code>sample_dir</code> and ge
 ##### :white_check_mark: Recursively parses input nested directories and files
 ##### :white_check_mark: Automatically generates index.html if multiple txt files are present in input directory
 
-## Example
+## Examples
+
+### Simple Example:
 
 `cli-ssg -i ".\sample_input.txt" -o "custom_dir" -s "https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css"`
 
@@ -75,6 +77,11 @@ This is the third paragraph
     </body>
     </html>
 ```
+
+### Complex Example:
+Using multiple text files in the input directory, the following website was created with an auto-generated index.html having links to each individual page:
+
+https://cli-ssg.vercel.app/
 
 ## License
 MIT
