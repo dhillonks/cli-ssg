@@ -7,6 +7,7 @@ Tool to generate html web site from txt input
 ## Installation
 
 ```
+npm i
 npm i -g .
 npm link
 ```
