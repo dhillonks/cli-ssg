@@ -44,19 +44,20 @@ const convertMdFileToHtml = (filePath, stylesheet) => {
   const data = parseFile(filePath);
   const title = data.match(/^# (.*$)/gim);
   const body = data
-      .replace(/\n$/gim, '<br />')
+      .replace(/(^[a-z](.*)$)/gim,'<p>$1</p>')
       .replace(/^###### (.*$)/gim, '<h6>$1</h6>')
       .replace(/^##### (.*$)/gim, '<h5>$1</h5>')
       .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
       .replace(/^# (.*$)/gim, '')
-      .replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
-      .replace(/\_\_(.*)\_\_/gim, '<b>$1</b>')
-      .replace(/\_(.*)\_/gim, '<i>$1</i>')
-      .replace(/\*(.*)\*/gim, '<i>$1</i>')
+      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+      .replace(/\_\_(.*)\_\_/gim, '<strong>$1</strong>')
+      .replace(/\_(.*)\_/gim, '<em>$1</em>')
+      .replace(/\*(.*)\*/gim, '<em>$1</em>')
       .replace(/\~\~(.*)\~\~/gim, '<del>$1</del>')
       .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
+      .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>")
 
 
     const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet);
