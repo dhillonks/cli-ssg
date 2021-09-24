@@ -36,6 +36,36 @@ const convertFileToHtml = (filePath, stylesheet) => {
 }
 
 /**
+ * Uses a md file path to create an html file
+ * @param {string} filePath 
+ * @param {string} stylesheet 
+ */
+const convertMdFileToHtml = (filePath, stylesheet) => {
+  const data = parseFile(filePath);
+  const title = data.match(/^# (.*$)/gim);
+  const body = data
+      .replace(/(^[a-z](.*)$)/gim,'<p>$1</p>')
+      .replace(/^###### (.*$)/gim, '<h6>$1</h6>')
+      .replace(/^##### (.*$)/gim, '<h5>$1</h5>')
+      .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gim, '')
+      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+      .replace(/\_\_(.*)\_\_/gim, '<strong>$1</strong>')
+      .replace(/\_(.*)\_/gim, '<em>$1</em>')
+      .replace(/\*(.*)\*/gim, '<em>$1</em>')
+      .replace(/\~\~(.*)\~\~/gim, '<del>$1</del>')
+      .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
+      .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>")
+
+
+    const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet);
+    const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
+    fs.writeFileSync(outputFilePath, html);
+}
+
+/**
  * Parses a file and returns data
  * @param {string} path
  */
@@ -90,6 +120,9 @@ const checkDirForTxt = (dirPath) => {
       else if(path.extname(file) === '.txt'){
         txtPaths.push(fullFilePath);
       }
+      else if(path.extname(file) === '.md'){
+        txtPaths.push(fullFilePath);
+      }
     });
     
     return txtPaths;
@@ -123,7 +156,11 @@ const main =  async (input, output, stylesheet) => {
             console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
             convertFileToHtml(input);
         }
-        else console.log(chalk.red("File must be .txt"));
+        else if(path.extname(input) === '.md'){   //add condition for readme
+            console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
+            convertMdFileToHtml(input);
+        }
+        else console.log(chalk.red("File must be either .txt or .md"));
     }
     else{
         const filePaths = checkDirForTxt(input);
@@ -131,9 +168,15 @@ const main =  async (input, output, stylesheet) => {
 
         filePaths.forEach(file => {
             console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
-            convertFileToHtml(file, stylesheet);
-            indexFileBody += `<a href="./${encodeURI(path.basename(file, '.txt'))}.html">${path.basename(file, '.txt')}</a><br>`
-          });
+            if(path.extname(file) === '.txt'){
+              convertFileToHtml(file, stylesheet);
+              indexFileBody += `<a href="./${encodeURI(path.basename(file, '.txt'))}.html">${path.basename(file, '.txt')}</a><br>`
+            }
+            else if(path.extname(file) === '.md'){
+              convertMdFileToHtml(file, stylesheet);
+              indexFileBody += `<a href="./${encodeURI(path.basename(file, '.md'))}.html">${path.basename(file, '.md')}</a><br>`
+            }
+        });
 
         //Generate an index.html with relative links to each HTML file
         const html = encloseInHtml('Index File', indexFileBody, stylesheet);
