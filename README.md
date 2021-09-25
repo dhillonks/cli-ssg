@@ -2,7 +2,7 @@
 
 ![stage badge](https://img.shields.io/badge/version-0.1-lightyellow) ![stage badge](https://img.shields.io/badge/license-MIT-green)
 
-Tool to generate html web site from txt input
+Tool to generate html web site from txt or md input
 
 ## Installation
 
@@ -25,7 +25,7 @@ Same as above, however <code>sample_file.html</code> now uses <code>./stylesheet
 ```
 cli-ssg -i "sample_dir" -o "output_dir"
 ```
-This processes all the <code>.txt</code> files in <code>sample_dir</code> and generates <code>.html</code> files for each of them. It also creates an <code>index.html</code> with relative links to each page, storing all these files in <code>output_dir</code>.
+This processes all the <code>.txt</code> and <code>.md</code> files in <code>sample_dir</code> and generates <code>.html</code> files for each of them. It also creates an <code>index.html</code> with relative links to each page, storing all these files in <code>output_dir</code>.
 
 ## Options
 
@@ -41,7 +41,7 @@ This processes all the <code>.txt</code> files in <code>sample_dir</code> and ge
 ##### :white_check_mark: Ability to provide a custom output directory
 ##### :white_check_mark: Ability to provide stylesheet URL
 ##### :white_check_mark: Recursively parses input nested directories and files
-##### :white_check_mark: Automatically generates index.html if multiple txt files are present in input directory
+##### :white_check_mark: Automatically generates index.html if multiple txt or md files are present in input directory
 
 ## Examples
 
