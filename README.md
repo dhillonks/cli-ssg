@@ -42,6 +42,9 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 ##### :white_check_mark: Ability to provide stylesheet URL
 ##### :white_check_mark: Recursively parses input nested directories and files
 ##### :white_check_mark: Automatically generates index.html if multiple txt or md files are present in input directory
+Newly added:
+##### :white_check_mark: `.md` files now accepted as input
+##### :white_check_mark: Ability to parse headings, paragraphs, links, bold and italic text using markdown syntax
 
 ## Examples
 
