@@ -51,13 +51,15 @@ const convertMdFileToHtml = (filePath, stylesheet) => {
       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
       .replace(/^# (.*$)/gim, '')
+      .replace(/^(\*{3,}|-{3,}|_{3,})(.*$)/gim, "<hr>")
       .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
       .replace(/\_\_(.*)\_\_/gim, '<strong>$1</strong>')
       .replace(/\_(.*)\_/gim, '<em>$1</em>')
       .replace(/\*(.*)\*/gim, '<em>$1</em>')
       .replace(/\~\~(.*)\~\~/gim, '<del>$1</del>')
       .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
-      .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>")
+      .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>");
+      
 
 
     const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet);
