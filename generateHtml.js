@@ -134,7 +134,7 @@ const checkDirForTxt = (dirPath) => {
  * @param {*} output - output directory path
  * @param {*} stylesheet - optional stylesheet
  */
-const main =  async (input, output, stylesheet) => {
+const main =  (input, output, stylesheet) => {
 
     outputDir = output;
     //Create empty directory for output
