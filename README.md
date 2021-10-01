@@ -35,7 +35,8 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
   -i, --input       Input file/folder to be processed        [string] [required]
   -o, --output      Output directory                [string] [default: "./dist"]
   -s, --stylesheet  CSS Stylesheet for the website                      [string]
-  ```
+  -l, --lang        Lang attribute for html element  [string] [default: "en-CA"]
+```
 ## Features
 ##### :white_check_mark: Parse title from the input files
 ##### :white_check_mark: Ability to provide a custom output directory
@@ -45,6 +46,7 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 Newly added:
 ##### :white_check_mark: `.md` files now accepted as input
 ##### :white_check_mark: Ability to parse headings, paragraphs, links, bold and italic text using markdown syntax
+##### :white_check_mark: Ability to specify the language using a `-l` flag
 
 ## Examples
 

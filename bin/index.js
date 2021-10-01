@@ -6,6 +6,7 @@ const fs = require("fs");
 const figlet = require("figlet");
 
 const outputDir = './dist';
+const defaultLang = 'en-CA';
 
 const decoratedHeader = figlet.textSync(package.name, {horizontalLayout: 'full'});
 console.log(decoratedHeader);
@@ -35,6 +36,12 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       alias: 's',
       description: 'CSS Stylesheet for the website',
       type: 'string'
+    },
+    lang: {
+      alias: 'l',
+      description: 'Lang attribute for html element',
+      type: 'string',
+      default: defaultLang
     }
   })
   .check((argv) => {
@@ -59,7 +66,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .argv;
 
 try {
-    generateHtml(argv.i, argv.o, argv.s);
+    generateHtml(argv.i, argv.o, argv.s, argv.l);
   } catch (err) {
     console.error(err)
   }

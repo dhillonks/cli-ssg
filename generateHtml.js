@@ -8,8 +8,9 @@ let outputDir = './dist';
  * Uses a txt file path to create an html file
  * @param {string} filePath 
  * @param {string} stylesheet 
+ * @param {string} lang
  */
-const convertFileToHtml = (filePath, stylesheet) => {
+const convertFileToHtml = (filePath, stylesheet, lang) => {
     const data = parseFile(filePath);
 
     const lines = data.split(/\r?\n/);
@@ -29,7 +30,7 @@ const convertFileToHtml = (filePath, stylesheet) => {
         }
     })
 
-    const html = encloseInHtml(title, body, stylesheet);
+    const html = encloseInHtml(title, body, stylesheet, lang);
 
     const outputFilePath = path.join(outputDir, path.basename(filePath, '.txt') + '.html')
     fs.writeFileSync(outputFilePath, html);
@@ -40,7 +41,7 @@ const convertFileToHtml = (filePath, stylesheet) => {
  * @param {string} filePath 
  * @param {string} stylesheet 
  */
-const convertMdFileToHtml = (filePath, stylesheet) => {
+const convertMdFileToHtml = (filePath, stylesheet, lang) => {
   const data = parseFile(filePath);
   const title = data.match(/^# (.*$)/gim);
   const body = data
@@ -60,7 +61,7 @@ const convertMdFileToHtml = (filePath, stylesheet) => {
       .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>")
 
 
-    const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet);
+    const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet, lang);
     const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
     fs.writeFileSync(outputFilePath, html);
 }
@@ -83,11 +84,12 @@ const parseFile = (path) => {
  * @param {string} body
  * @param {string} title
  * @param {string} stylesheet
+ * @param {string} lang
  * @returns valid HTML containing the body
  */
- const encloseInHtml = (title, body, stylesheet) => {
+ const encloseInHtml = (title, body, stylesheet, lang) => {
     return `<!doctype html>
-    <html lang="en">
+    <html lang="${lang}">
     <head>
       <meta charset="utf-8">
       <title>${title}</title>
@@ -130,11 +132,12 @@ const checkDirForTxt = (dirPath) => {
 
 /**
  * Main function to handle cli
- * @param {*} input - input file/dir path
- * @param {*} output - output directory path
- * @param {*} stylesheet - optional stylesheet
+ * @param {string} input - input file/dir path
+ * @param {string} output - output directory path
+ * @param {string} stylesheet - optional stylesheet
+ * @param {string} stylesheet - optional language attribute for html element
  */
-const main =  (input, output, stylesheet) => {
+const main =  (input, output, stylesheet, lang) => {
 
     outputDir = output;
     //Create empty directory for output
@@ -154,11 +157,11 @@ const main =  (input, output, stylesheet) => {
     if(stats.isFile()){
         if(path.extname(input) === '.txt'){
             console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
-            convertFileToHtml(input);
+            convertFileToHtml(input, stylesheet, lang);
         }
-        else if(path.extname(input) === '.md'){   //add condition for readme
+        else if(path.extname(input) === '.md'){   //add condition for .md
             console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
-            convertMdFileToHtml(input);
+            convertMdFileToHtml(input, stylesheet, lang);
         }
         else console.log(chalk.red("File must be either .txt or .md"));
     }
@@ -169,17 +172,17 @@ const main =  (input, output, stylesheet) => {
         filePaths.forEach(file => {
             console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
             if(path.extname(file) === '.txt'){
-              convertFileToHtml(file, stylesheet);
+              convertFileToHtml(file, stylesheet, lang);
               indexFileBody += `<a href="./${encodeURI(path.basename(file, '.txt'))}.html">${path.basename(file, '.txt')}</a><br>`
             }
             else if(path.extname(file) === '.md'){
-              convertMdFileToHtml(file, stylesheet);
+              convertMdFileToHtml(file, stylesheet, lang);
               indexFileBody += `<a href="./${encodeURI(path.basename(file, '.md'))}.html">${path.basename(file, '.md')}</a><br>`
             }
         });
 
         //Generate an index.html with relative links to each HTML file
-        const html = encloseInHtml('Index File', indexFileBody, stylesheet);
+        const html = encloseInHtml('Index File', indexFileBody, stylesheet, lang);
         const outputFilePath = path.join(outputDir, 'index.html');
         fs.writeFileSync(outputFilePath, html);
     }
