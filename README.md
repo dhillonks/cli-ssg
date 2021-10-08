@@ -36,6 +36,7 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
   -o, --output      Output directory                [string] [default: "./dist"]
   -s, --stylesheet  CSS Stylesheet for the website                      [string]
   -l, --lang        Lang attribute for html element  [string] [default: "en-CA"]
+  -c, --config      Pass JSON file for options                          [string]
 ```
 ## Features
 ##### :white_check_mark: Parse title from the input files
@@ -48,6 +49,8 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 ##### :white_check_mark: Ability to specify the language using a `-l` flag
 
 ##### :white_check_mark: Produces horizontal rule using markdown syntax in `.md` files
+##### :white_check_mark: Pass a JSON file for the options
+
 ## Examples
 
 ### Simple Example:
