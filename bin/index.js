@@ -80,7 +80,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .argv;
 
 try {
-    generateHtml(argv.i, argv.o, argv.s, argv.l);
+    generateHtml(argv.i, argv.o, argv.s, argv.l, argv.c);
   } catch (err) {
     console.error(err)
   }
