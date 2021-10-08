@@ -42,6 +42,11 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       description: 'Lang attribute for html element',
       type: 'string',
       default: defaultLang
+    },
+    config: {
+      alias: 'c',
+      description: 'Specify all of the SSG options in a JSON formatted configuration file',
+      type: 'string'
     }
   })
   .check((argv) => {
