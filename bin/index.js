@@ -24,7 +24,6 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       description: 'Input file/folder to be processed',
       type: 'string',
       requiresArg: true,
-      required: true
     },
     output: {
       alias: 'o',
