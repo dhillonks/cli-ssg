@@ -4,6 +4,8 @@ const package = require("../package");
 const generateHtml = require("../generateHtml");
 const fs = require("fs");
 const figlet = require("figlet");
+const path = require("path");
+const { exit } = require("process");
 
 const outputDir = './dist';
 const defaultLang = 'en-CA';
@@ -45,7 +47,8 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
     config: {
       alias: 'c',
       description: 'Specify all of the SSG options in a JSON formatted configuration file',
-      type: 'string'
+      type: 'string',
+      requiresArg: true
     }
   })
   .check((argv) => {
@@ -65,12 +68,27 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
           throw new Error("Output path points to a file. Output directory must be valid")
         }
       }
+      else throw new Error("Output directory must be valid");
     }
 
+
     if(argv.c){
-      //Config
-      if(!fs.existsSync(argv.c)){
-        throw new Error("JSON file path does not exist");
+
+      if(isJSON(process.argv[3])){
+
+        //Config
+        if(!fs.existsSync(argv.c)){
+          throw new Error("JSON file path does not exist");
+        }
+        var data = JSON.parse(fs.readFileSync(argv.c));
+
+        if(data.input)      argv.i = data.input
+        if(data.output)     argv.o = data.output
+        if(data.stylesheet) argv.s = data.stylesheet
+        if(data.lang)       argv.l = data.lang
+        
+      }else{
+        throw new Error("The passed file should be of JSON format")
       }
     }
     
@@ -79,7 +97,14 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   .argv;
 
 try {
-    generateHtml(argv.i, argv.o, argv.s, argv.l, argv.c);
+    generateHtml(argv.i, argv.o, argv.s, argv.l);
   } catch (err) {
     console.error(err)
+  }
+
+  function isJSON(stats){
+    if(path.extname(stats) == ".json") 
+      return true
+    else 
+      return false
   }

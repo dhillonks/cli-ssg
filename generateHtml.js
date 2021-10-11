@@ -139,18 +139,7 @@ const checkDirForTxt = (dirPath) => {
  * @param {string} stylesheet - optional stylesheet
  * @param {string} stylesheet - optional language attribute for html element
  */
-const main =  (input, output, stylesheet, lang, config) => {
-
-    if(config){
-
-      var data = JSON.parse(fs.readFileSync(config));
-
-      if(data.input)      input = data.input
-      if(data.output)     output = data.output
-      if(data.stylesheet) stylesheet = data.stylesheet
-      if(data.lang)       lang = data.lang
-      
-    }
+const main =  (input, output, stylesheet, lang) => {
 
     outputDir = output;
     //Create empty directory for output
