@@ -4,6 +4,8 @@ const package = require("../package");
 const generateHtml = require("../generateHtml");
 const fs = require("fs");
 const figlet = require("figlet");
+const path = require("path");
+const { exit } = require("process");
 
 const outputDir = './dist';
 const defaultLang = 'en-CA';
@@ -24,7 +26,6 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       description: 'Input file/folder to be processed',
       type: 'string',
       requiresArg: true,
-      required: true
     },
     output: {
       alias: 'o',
@@ -42,23 +43,55 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       description: 'Lang attribute for html element',
       type: 'string',
       default: defaultLang
+    },
+    config: {
+      alias: 'c',
+      description: 'Specify all of the SSG options in a JSON formatted configuration file',
+      type: 'string',
+      requiresArg: true
     }
   })
   .check((argv) => {
 
     //Input
-    if(!fs.existsSync(argv.i)){
-      throw new Error("Input path must be a file or directory");
+    if(argv.i){
+
+      if(!fs.existsSync(argv.i)){
+        throw new Error("Input path must be a file or directory");
+      }
     }
 
     //Output
-    if(argv.o != outputDir){
+    else if(argv.o != outputDir){
       if(fs.existsSync(argv.o)){
         if(!fs.lstatSync(argv.o).isDirectory()){
           throw new Error("Output path points to a file. Output directory must be valid")
         }
       }
       else throw new Error("Output directory must be valid");
+    }
+
+    //Config
+    else if(argv.c){
+
+      if(isJSON(process.argv[3])){
+
+        if(!fs.existsSync(argv.c)){
+          throw new Error("JSON file path does not exist");
+        }
+        var data = JSON.parse(fs.readFileSync(argv.c));
+
+        if(data.input)      argv.i = data.input
+        if(data.output)     argv.o = data.output
+        if(data.stylesheet) argv.s = data.stylesheet
+        if(data.lang)       argv.l = data.lang
+        
+      }else{
+        throw new Error("The passed file should be of JSON format")
+      }
+    }
+    else {
+      throw new Error("A config file(.JSON) or an input file is required");
     }
     
     return true;
@@ -69,4 +102,11 @@ try {
     generateHtml(argv.i, argv.o, argv.s, argv.l);
   } catch (err) {
     console.error(err)
+  }
+
+  function isJSON(stats){
+    if(path.extname(stats) == ".json") 
+      return true
+    else 
+      return false
   }
