@@ -53,16 +53,16 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   })
   .check((argv) => {
 
+    //Input
     if(argv.i){
 
-      //Input
       if(!fs.existsSync(argv.i)){
         throw new Error("Input path must be a file or directory");
       }
     }
 
     //Output
-    if(argv.o != outputDir){
+    else if(argv.o != outputDir){
       if(fs.existsSync(argv.o)){
         if(!fs.lstatSync(argv.o).isDirectory()){
           throw new Error("Output path points to a file. Output directory must be valid")
@@ -71,12 +71,11 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       else throw new Error("Output directory must be valid");
     }
 
-
-    if(argv.c){
+    //Config
+    else if(argv.c){
 
       if(isJSON(process.argv[3])){
 
-        //Config
         if(!fs.existsSync(argv.c)){
           throw new Error("JSON file path does not exist");
         }
@@ -90,6 +89,9 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
       }else{
         throw new Error("The passed file should be of JSON format")
       }
+    }
+    else {
+      throw new Error("A config file(.JSON) or an input file is required");
     }
     
     return true;
