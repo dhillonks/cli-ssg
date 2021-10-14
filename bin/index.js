@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 const package = require("../package");
-const generateHtml = require("../generateHtml");
-const fs = require("fs");
+const generateHtml = require("./modules/generateHtml");
 const figlet = require("figlet");
-const path = require("path");
-const { exit } = require("process");
+const { Options } = require("./modules/configOptions");
 
 const outputDir = './dist';
 const defaultLang = 'en-CA';
+let options;
 
 const decoratedHeader = figlet.textSync(package.name, {horizontalLayout: 'full'});
 console.log(decoratedHeader);
@@ -52,61 +51,20 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
     }
   })
   .check((argv) => {
+    options = new Options(argv.i, argv.o, argv.s, argv.l);
 
-    //Input
-    if(argv.i){
-
-      if(!fs.existsSync(argv.i)){
-        throw new Error("Input path must be a file or directory");
-      }
+    if(argv.c){
+      //Parse and use options from the config file
+      options.parseConfig(argv.c);
     }
 
-    //Output
-    else if(argv.o != outputDir){
-      if(fs.existsSync(argv.o)){
-        if(!fs.lstatSync(argv.o).isDirectory()){
-          throw new Error("Output path points to a file. Output directory must be valid")
-        }
-      }
-      else throw new Error("Output directory must be valid");
-    }
-
-    //Config
-    else if(argv.c){
-
-      if(isJSON(process.argv[3])){
-
-        if(!fs.existsSync(argv.c)){
-          throw new Error("JSON file path does not exist");
-        }
-        var data = JSON.parse(fs.readFileSync(argv.c));
-
-        if(data.input)      argv.i = data.input
-        if(data.output)     argv.o = data.output
-        if(data.stylesheet) argv.s = data.stylesheet
-        if(data.lang)       argv.l = data.lang
-        
-      }else{
-        throw new Error("The passed file should be of JSON format")
-      }
-    }
-    else {
-      throw new Error("A config file(.JSON) or an input file is required");
-    }
-    
-    return true;
+    //Validate the options
+    return options.validateInput() && options.validateOutput();
   })
   .argv;
 
 try {
-    generateHtml(argv.i, argv.o, argv.s, argv.l);
-  } catch (err) {
-    console.error(err)
-  }
-
-  function isJSON(stats){
-    if(path.extname(stats) == ".json") 
-      return true
-    else 
-      return false
-  }
+  generateHtml(options.input, options.output, options.stylesheet, options.lang);
+} catch (err) {
+  console.error(err)
+}

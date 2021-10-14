@@ -60,8 +60,6 @@ const convertMdFileToHtml = (filePath, stylesheet, lang) => {
       .replace(/\~\~(.*)\~\~/gim, '<del>$1</del>')
       .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
       .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>");
-      
-
 
     const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet, lang);
     const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
@@ -73,12 +71,12 @@ const convertMdFileToHtml = (filePath, stylesheet, lang) => {
  * @param {string} path
  */
 const parseFile = (path) => {
-    try {
-        const data = fs.readFileSync(path, 'utf8')
-        return data;
-      } catch (err) {
-        console.error(err)
-      }
+  try {
+    const data = fs.readFileSync(path, 'utf8')
+    return data;
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 /**
@@ -102,7 +100,7 @@ const parseFile = (path) => {
       <h1>${title}</h1>
       ${body}
     </body>
-    </html>`
+    </html>`;
 }
 
 /**
@@ -140,8 +138,8 @@ const checkDirForTxt = (dirPath) => {
  * @param {string} stylesheet - optional language attribute for html element
  */
 const main =  (input, output, stylesheet, lang) => {
-
     outputDir = output;
+    
     //Create empty directory for output
     if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir, {recursive: true});
