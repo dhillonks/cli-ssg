@@ -91,6 +91,23 @@ Using multiple text files in the input directory, the following website was crea
 
 https://cli-ssg.vercel.app/
 
+### Use a config JSON file:
+A `.JSON` file can also be used to supply arguments instead of using the command line.
+```
+cli-ssg -i ".\sample_input.txt" -o "custom_dir" -s "https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css"
+```
+For example, the above is equivalent to
+```
+cli-ssg -c "config.json"
+```
+where `config.json`:
+```
+{
+    "input": "./sample_input.txt",
+    "output":"custom_dir",
+    "stylesheet": "https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css"
+}
+```
 ## License
 MIT
   
