@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const md = require('markdown-it')();
 
 let outputDir = './dist';
 
@@ -44,26 +45,12 @@ const convertFileToHtml = (filePath, stylesheet, lang) => {
 const convertMdFileToHtml = (filePath, stylesheet, lang) => {
   const data = parseFile(filePath);
   const title = data.match(/^# (.*$)/gim);
-  const body = data
-      .replace(/(^[a-z](.*)$)/gim,'<p>$1</p>')
-      .replace(/^###### (.*$)/gim, '<h6>$1</h6>')
-      .replace(/^##### (.*$)/gim, '<h5>$1</h5>')
-      .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
-      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-      .replace(/^# (.*$)/gim, '')
-      .replace(/^(\*{3,}|-{3,}|_{3,})(.*$)/gim, "<hr>")
-      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-      .replace(/\_\_(.*)\_\_/gim, '<strong>$1</strong>')
-      .replace(/\_(.*)\_/gim, '<em>$1</em>')
-      .replace(/\*(.*)\*/gim, '<em>$1</em>')
-      .replace(/\~\~(.*)\~\~/gim, '<del>$1</del>')
-      .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
-      .replace(/^<http(.*)$/gim, "<a href='http$1'>http$1</a>");
 
-    const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet, lang);
-    const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
-    fs.writeFileSync(outputFilePath, html);
+  const body = md.render(data);
+
+  const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet, lang);
+  const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
+  fs.writeFileSync(outputFilePath, html);
 }
 
 /**
