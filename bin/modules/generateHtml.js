@@ -7,40 +7,44 @@ let outputDir = './dist';
 
 /**
  * Uses a txt file path to create an html file
- * @param {string} filePath 
- * @param {string} stylesheet 
+ * @param {string} filePath
+ * @param {string} stylesheet
  * @param {string} lang
  */
 const convertFileToHtml = (filePath, stylesheet, lang) => {
-    const data = parseFile(filePath);
+  const data = parseFile(filePath);
 
-    const lines = data.split(/\r?\n/);
+  const lines = data.split(/\r?\n/);
 
-    let body = '', title = '';
-    
-    //Check for title - 2nd and 3rd line blank
-    if(!lines[1] && !lines[2]){
-        title = lines[0];
-        lines.splice(0,3);
+  let body = '',
+    title = '';
+
+  //Check for title - 2nd and 3rd line blank
+  if (!lines[1] && !lines[2]) {
+    title = lines[0];
+    lines.splice(0, 3);
+  }
+
+  //Populate body
+  lines.forEach((line) => {
+    if (line) {
+      body += `<p>${line}</p>`;
     }
+  });
 
-    //Populate body
-    lines.forEach(line => {        
-        if(line){
-            body+=`<p>${line}</p>`;
-        }
-    })
+  const html = encloseInHtml(title, body, stylesheet, lang);
 
-    const html = encloseInHtml(title, body, stylesheet, lang);
-
-    const outputFilePath = path.join(outputDir, path.basename(filePath, '.txt') + '.html')
-    fs.writeFileSync(outputFilePath, html);
-}
+  const outputFilePath = path.join(
+    outputDir,
+    path.basename(filePath, '.txt') + '.html'
+  );
+  fs.writeFileSync(outputFilePath, html);
+};
 
 /**
  * Uses a md file path to create an html file
- * @param {string} filePath 
- * @param {string} stylesheet 
+ * @param {string} filePath
+ * @param {string} stylesheet
  */
 const convertMdFileToHtml = (filePath, stylesheet, lang) => {
   const data = parseFile(filePath);
@@ -49,9 +53,12 @@ const convertMdFileToHtml = (filePath, stylesheet, lang) => {
   const body = md.render(data);
 
   const html = encloseInHtml(title[0].slice(2), body.trim(), stylesheet, lang);
-  const outputFilePath = path.join(outputDir, path.basename(filePath, '.md') + '.html')
+  const outputFilePath = path.join(
+    outputDir,
+    path.basename(filePath, '.md') + '.html'
+  );
   fs.writeFileSync(outputFilePath, html);
-}
+};
 
 /**
  * Parses a file and returns data
@@ -59,12 +66,12 @@ const convertMdFileToHtml = (filePath, stylesheet, lang) => {
  */
 const parseFile = (path) => {
   try {
-    const data = fs.readFileSync(path, 'utf8')
+    const data = fs.readFileSync(path, 'utf8');
     return data;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 /**
  * Returns a HTML5 string using the following args
@@ -74,8 +81,8 @@ const parseFile = (path) => {
  * @param {string} lang
  * @returns valid HTML containing the body
  */
- const encloseInHtml = (title, body, stylesheet, lang) => {
-    return `<!doctype html>
+const encloseInHtml = (title, body, stylesheet, lang) => {
+  return `<!doctype html>
     <html lang="${lang}">
     <head>
       <meta charset="utf-8">
@@ -88,34 +95,32 @@ const parseFile = (path) => {
       ${body}
     </body>
     </html>`;
-}
+};
 
 /**
  * Recursively checks a directory and returns paths for all .txt files
- * @param {string} dirPath 
- * @returns {Array<String>} Array containing file paths 
+ * @param {string} dirPath
+ * @returns {Array<String>} Array containing file paths
  */
 const checkDirForTxt = (dirPath) => {
-    let txtPaths = [];
+  let txtPaths = [];
 
-    const files = fs.readdirSync(dirPath);
-    
-    files.forEach((file) => {
-      const fullFilePath = path.join(dirPath, file);
+  const files = fs.readdirSync(dirPath);
 
-      if(fs.lstatSync(fullFilePath).isDirectory()){
-        txtPaths = [...txtPaths, ...checkDirForTxt(fullFilePath)];
-      }
-      else if(path.extname(file) === '.txt'){
-        txtPaths.push(fullFilePath);
-      }
-      else if(path.extname(file) === '.md'){
-        txtPaths.push(fullFilePath);
-      }
-    });
-    
-    return txtPaths;
-}
+  files.forEach((file) => {
+    const fullFilePath = path.join(dirPath, file);
+
+    if (fs.lstatSync(fullFilePath).isDirectory()) {
+      txtPaths = [...txtPaths, ...checkDirForTxt(fullFilePath)];
+    } else if (path.extname(file) === '.txt') {
+      txtPaths.push(fullFilePath);
+    } else if (path.extname(file) === '.md') {
+      txtPaths.push(fullFilePath);
+    }
+  });
+
+  return txtPaths;
+};
 
 /**
  * Main function to handle cli
@@ -124,55 +129,55 @@ const checkDirForTxt = (dirPath) => {
  * @param {string} stylesheet - optional stylesheet
  * @param {string} stylesheet - optional language attribute for html element
  */
-const main =  (input, output, stylesheet, lang) => {
-    outputDir = output;
-    
-    //Create empty directory for output
-    if (!fs.existsSync(outputDir)){
-        fs.mkdirSync(outputDir, {recursive: true});
-    }
-    else{
-        fs.rmdirSync(outputDir, { recursive: true });
-        fs.mkdirSync(outputDir, {recursive: true});
-    }
-    
-    console.log("Input directory: " + input);
+const main = (input, output, stylesheet, lang) => {
+  outputDir = output;
 
-    //Check if input points to a file or a folder
-    var stats = fs.statSync(input);
+  //Create empty directory for output
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  } else {
+    fs.rmdirSync(outputDir, { recursive: true });
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
-    if(stats.isFile()){
-        if(path.extname(input) === '.txt'){
-            console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
-            convertFileToHtml(input, stylesheet, lang);
-        }
-        else if(path.extname(input) === '.md'){   //add condition for .md
-            console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
-            convertMdFileToHtml(input, stylesheet, lang);
-        }
-        else console.log(chalk.red("File must be either .txt or .md"));
-    }
-    else{
-        const filePaths = checkDirForTxt(input);
-        let indexFileBody = '';
+  console.log('Input directory: ' + input);
 
-        filePaths.forEach(file => {
-            console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
-            if(path.extname(file) === '.txt'){
-              convertFileToHtml(file, stylesheet, lang);
-              indexFileBody += `<a href="./${encodeURI(path.basename(file, '.txt'))}.html">${path.basename(file, '.txt')}</a><br>`
-            }
-            else if(path.extname(file) === '.md'){
-              convertMdFileToHtml(file, stylesheet, lang);
-              indexFileBody += `<a href="./${encodeURI(path.basename(file, '.md'))}.html">${path.basename(file, '.md')}</a><br>`
-            }
-        });
+  //Check if input points to a file or a folder
+  var stats = fs.statSync(input);
 
-        //Generate an index.html with relative links to each HTML file
-        const html = encloseInHtml('Index File', indexFileBody, stylesheet, lang);
-        const outputFilePath = path.join(outputDir, 'index.html');
-        fs.writeFileSync(outputFilePath, html);
-    }
-}
+  if (stats.isFile()) {
+    if (path.extname(input) === '.txt') {
+      console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
+      convertFileToHtml(input, stylesheet, lang);
+    } else if (path.extname(input) === '.md') {
+      //add condition for .md
+      console.log(chalk.green(`Converting ${path.basename(input)} to HTML`));
+      convertMdFileToHtml(input, stylesheet, lang);
+    } else console.log(chalk.red('File must be either .txt or .md'));
+  } else {
+    const filePaths = checkDirForTxt(input);
+    let indexFileBody = '';
+
+    filePaths.forEach((file) => {
+      console.log(chalk.green(`Converting ${path.basename(file)} to HTML`));
+      if (path.extname(file) === '.txt') {
+        convertFileToHtml(file, stylesheet, lang);
+        indexFileBody += `<a href="./${encodeURI(
+          path.basename(file, '.txt')
+        )}.html">${path.basename(file, '.txt')}</a><br>`;
+      } else if (path.extname(file) === '.md') {
+        convertMdFileToHtml(file, stylesheet, lang);
+        indexFileBody += `<a href="./${encodeURI(
+          path.basename(file, '.md')
+        )}.html">${path.basename(file, '.md')}</a><br>`;
+      }
+    });
+
+    //Generate an index.html with relative links to each HTML file
+    const html = encloseInHtml('Index File', indexFileBody, stylesheet, lang);
+    const outputFilePath = path.join(outputDir, 'index.html');
+    fs.writeFileSync(outputFilePath, html);
+  }
+};
 
 module.exports = main;

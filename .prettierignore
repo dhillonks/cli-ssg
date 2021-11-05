@@ -1,0 +1,5 @@
+# Ignore artifacts:
+node_modules
+sample_input
+.eslintrc.json
+.vscode

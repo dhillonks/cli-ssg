@@ -4,7 +4,11 @@
   "description": "Tool to generate HTML web sites using txt",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write .",
+    "prettier-check": "prettier --check .",
+    "eslint": "eslint --config .eslintrc.json .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -24,5 +28,13 @@
   },
   "bin": {
     "cli-ssg": "./bin/index.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
+    "prettier": "2.4.1",
+    "pretty-quick": "^3.1.1"
   }
 }
