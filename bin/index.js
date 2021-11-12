@@ -3,7 +3,7 @@
 const package = require('../package');
 const figlet = require('figlet');
 const process = require('process');
-const generateHtml = require('./modules/generateHtml');
+const { main } = require('./modules/generateHtml');
 const { Options } = require('./modules/configOptions');
 
 const outputDir = './dist';
@@ -72,7 +72,7 @@ var argv = require('yargs/yargs')(process.argv.slice(2))
   }).argv;
 
 try {
-  generateHtml(options.input, options.output, options.stylesheet, options.lang);
+  main(options.input, options.output, options.stylesheet, options.lang);
 } catch (err) {
   console.error(err);
 }

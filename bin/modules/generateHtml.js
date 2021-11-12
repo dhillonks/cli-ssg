@@ -39,6 +39,8 @@ const convertFileToHtml = (filePath, stylesheet, lang) => {
     path.basename(filePath, '.txt') + '.html'
   );
   fs.writeFileSync(outputFilePath, html);
+
+  return html;
 };
 
 /**
@@ -180,4 +182,5 @@ const main = (input, output, stylesheet, lang) => {
   }
 };
 
-module.exports = main;
+module.exports.main = main;
+module.exports.convertFileToHtml = convertFileToHtml;
