@@ -52,4 +52,32 @@ describe('convert txt file to html tests', () => {
       `<!doctypehtml><htmllang=\"fr\"><head><metacharset=\"utf-8\"><title>sampleinput</title><metaname=\"viewport\"content=\"width=device-width,initial-scale=1\"><linkhref=\"styleSheetURI\"rel=\"stylesheet\"></head><body><h1>sampleinput</h1></body></html>`
     );
   });
+
+  test('convertFileToHtml output should be Defined', async () => {
+    const generatedHTML = convertFileToHtml(inputFilePath, 'styleSheetURI');
+
+    expect(generatedHTML).toBeDefined();
+  });
+
+  test('convertFileToHtml output should be Defined', async () => {
+    const generatedHTML = convertFileToHtml(inputFilePath, 'styleSheetURI');
+
+    expect(generatedHTML).toBeDefined();
+  });
+
+  test('convertFileToHtml output should be not null', async () => {
+    const generatedHTML = convertFileToHtml(inputFilePath, 'styleSheetURI');
+
+    expect(generatedHTML).not.toBeNull();
+  });
+
+  test('convertFileToHtml output should be Truthy', async () => {
+    const generatedHTML = convertFileToHtml(inputFilePath, 'styleSheetURI');
+
+    expect(generatedHTML).toBeTruthy();
+  });
+
+  test('convertFileToHtml without parameters should throw', async () => {
+    expect(() => convertFileToHtml()).toThrow();
+  });
 });
