@@ -38,7 +38,7 @@ describe('validate defaults', () => {
   });
 
   test('default lang should be dist', async () => {
-    expect(Options.DEFAULT_LANG).toEqual('en-CA');
+    expect(Options.DEFAULT_LANG).toEqual('fr');
   });
 });
 
