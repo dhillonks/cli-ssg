@@ -4,13 +4,18 @@ const fs = require('fs');
 
 describe('convert txt file to html tests', () => {
   let inputFilePath = './testFile.txt';
+  const outputDir = './dist';
   const fileInput = `sample input`;
 
   beforeEach(() => {
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir);
+    }
     fs.writeFileSync(inputFilePath, fileInput);
   });
 
   afterAll(() => {
+    fs.rmdirSync(outputDir, { recursive: true });
     fs.unlinkSync(inputFilePath);
   });
 
