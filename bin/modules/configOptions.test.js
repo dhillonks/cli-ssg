@@ -31,3 +31,34 @@ describe('validate input tests', () => {
     expect(options.validateInput()).toEqual(true);
   });
 });
+
+describe('validate defaults', () => {
+  test('default output should be dist', async () => {
+    expect(Options.DEFAULT_OUTPUT).toEqual('./dist');
+  });
+
+  test('default lang should be dist', async () => {
+    expect(Options.DEFAULT_LANG).toEqual('en-CA');
+  });
+});
+
+describe('validate output tests', () => {
+  let options;
+
+  beforeEach(() => {
+    options = new Options();
+  });
+
+  test('should throw for null, undefined and empty output', async () => {
+    [null, undefined, ''].forEach((p) => {
+      options.output = p;
+      expect(() => options.validateOutput()).toThrow();
+    });
+  });
+
+  test('should return true for default output', async () => {
+    options.output = Options.DEFAULT_OUTPUT;
+
+    expect(options.validateOutput()).toEqual(true);
+  });
+});
