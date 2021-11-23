@@ -71,7 +71,7 @@ const parseFile = (path) => {
     const data = fs.readFileSync(path, 'utf8');
     return data;
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 };
 
