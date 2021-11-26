@@ -1,15 +1,14 @@
 {
   "name": "cli-ssg",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Tool to generate HTML web sites using txt",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",
     "eslint": "eslint --config .eslintrc.json .",
     "prepare": "husky install",
-    "test": "jest",
     "test-watch": "jest --watch --"
   },
   "repository": {
