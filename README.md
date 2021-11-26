@@ -1,6 +1,6 @@
 # cli-ssg
 
-![stage badge](https://img.shields.io/badge/version-0.1-lightyellow) ![stage badge](https://img.shields.io/badge/license-MIT-green)
+![stage badge](https://img.shields.io/badge/version-1.0-lightyellow) ![stage badge](https://img.shields.io/badge/license-MIT-green)
 
 Tool to generate html web site from txt or md input
 
@@ -44,8 +44,6 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 
 ## Features
 
-##### :white_check_mark: Parse title from the input files
-
 ##### :white_check_mark: Ability to provide a custom output directory
 
 ##### :white_check_mark: Ability to provide stylesheet URL
@@ -56,13 +54,13 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 
 ##### :white_check_mark: `.md` files now accepted as input
 
-##### :white_check_mark: Ability to parse markdown syntax to generate HTML
+##### :white_check_mark: Ability to parse all markdown syntax to generate HTML
 
 ##### :white_check_mark: Ability to specify the language using a `-l` flag
 
-##### :white_check_mark: Produces horizontal rule using markdown syntax in `.md` files
-
 ##### :white_check_mark: Pass a JSON file for the options
+
+##### :white_check_mark: Parse title and paragraphs from the input txt files
 
 ## Examples
 
