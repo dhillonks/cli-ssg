@@ -58,7 +58,7 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 
 ##### :white_check_mark: `.md` files now accepted as input
 
-##### :white_check_mark: Ability to parse headings, paragraphs, links, bold and italic text using markdown syntax
+##### :white_check_mark: Ability to parse markdown syntax to generate HTML
 
 ##### :white_check_mark: Ability to specify the language using a `-l` flag
 
