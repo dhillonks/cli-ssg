@@ -2,7 +2,7 @@
   "name": "cli-ssg",
   "version": "1.0.0",
   "description": "Tool to generate HTML web sites using txt",
-  "main": "index.js",
+  "main": "./bin/index.js",
   "scripts": {
     "test": "jest",
     "prettier": "prettier --write .",
