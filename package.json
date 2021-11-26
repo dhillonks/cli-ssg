@@ -1,6 +1,6 @@
 {
   "name": "cli-ssg",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tool to generate HTML web sites using txt",
   "main": "./bin/index.js",
   "scripts": {

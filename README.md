@@ -7,9 +7,7 @@ Tool to generate html web site from txt or md input
 ## Installation
 
 ```
-npm i
-npm i -g .
-npm link
+npm i cli-ssg
 ```
 
 ## Usage
@@ -68,11 +66,11 @@ This processes all the <code>.txt</code> and <code>.md</code> files in <code>sam
 
 ## Examples
 
-### Simple Example:
+### Simple Example
 
 `cli-ssg -i ".\sample_input.txt" -o "custom_dir" -s "https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css"`
 
-#### sample_input.txt:
+#### sample_input.txt
 
 ```
 Sample title                   //<---first line followed by 2 empty lines treated as title
@@ -85,7 +83,7 @@ This is the second paragraph.
 This is the third paragraph
 ```
 
-#### custom_dir\sample_output.html:
+#### custom_dir\sample_output.html
 
 ```html
 <!DOCTYPE html>
@@ -107,13 +105,13 @@ This is the third paragraph
 </html>
 ```
 
-### Complex Example:
+### Complex Example
 
 Using multiple text files in the input directory, the following website was created with an auto-generated index.html having links to each individual page:
 
-https://cli-ssg.vercel.app/
+<https://cli-ssg.vercel.app/>
 
-### Use a config JSON file:
+### Use a config JSON file
 
 A `.JSON` file can also be used to supply arguments instead of using the command line.
 
